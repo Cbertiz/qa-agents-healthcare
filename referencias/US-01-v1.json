@@ -1,0 +1,34 @@
+{
+  "story_id": "US-01-agendar-consulta",
+  "ambiguedades": [
+    {
+      "texto": "No se puede agendar si el afiliado tiene deuda.",
+      "pregunta_para_po": "¿Qué se considera exactamente 'tener deuda'? ¿Aplica a cualquier monto vencido o hay un umbral específico? ¿Cómo se valida esta deuda en tiempo real con el sistema de cobranzas?"
+    },
+    {
+      "texto": "Se envía una confirmación después de agendar.",
+      "pregunta_para_po": "¿Por qué medio se envía la confirmación (email, SMS, notificación push)? ¿Cuál es el contenido requerido de dicho mensaje?"
+    },
+    {
+      "texto": "Un afiliado no puede tener más de 2 consultas pendientes con la misma especialidad.",
+      "pregunta_para_po": "¿Qué define el estado 'pendiente'? ¿Incluye consultas pasadas que no se cancelaron o solo futuras? ¿Qué debe ver el usuario si intenta superar este límite?"
+    }
+  ],
+  "criterios_faltantes": [
+    "Definir el comportamiento del sistema ante fallas de conexión al validar la deuda.",
+    "Especificar qué sucede si el horario seleccionado deja de estar disponible justo antes de confirmar (condición de carrera).",
+    "Definir si el afiliado puede cancelar una consulta y cómo impacta en el límite de consultas pendientes."
+  ],
+  "riesgos": [
+    {
+      "descripcion": "Condiciones de carrera al intentar agendar el mismo horario por múltiples usuarios simultáneamente.",
+      "severidad": "alta"
+    },
+    {
+      "descripcion": "Dependencia del servicio externo de validación de deuda y su disponibilidad.",
+      "severidad": "media"
+    }
+  ],
+  "testeable": false,
+  "confianza": 0.65
+}

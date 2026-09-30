@@ -1,0 +1,145 @@
+{
+  "story": {
+    "id": "US-01",
+    "titulo": "Agendar consulta",
+    "descripcion": "Como afiliado activo, quiero agendar una consulta con un especialista para no tener que llamar por teléfono.",
+    "criterios": [
+      "El afiliado puede elegir especialidad, médico y horario disponible.",
+      "No se puede agendar si el afiliado tiene deuda.",
+      "Se envía una confirmación después de agendar.",
+      "Un afiliado no puede tener más de 2 consultas pendientes con la misma especialidad."
+    ],
+    "texto_original": "# US-01: Agendar consulta\n\nComo afiliado activo, quiero agendar una consulta con un especialista\npara no tener que llamar por teléfono.\n\n## Criterios de aceptación\n- El afiliado puede elegir especialidad, médico y horario disponible.\n- No se puede agendar si el afiliado tiene deuda.\n- Se envía una confirmación después de agendar.\n- Un afiliado no puede tener más de 2 consultas pendientes con la misma especialidad.\n",
+    "fuente": "archivo:US-01-agendar-consulta.md"
+  },
+  "analisis": {
+    "story_id": "US-01",
+    "resumen": "Permite al afiliado activo agendar una consulta con un especialista seleccionando especialidad, médico y horario, validando que no tenga deudas ni más de 2 consultas pendientes en la misma especialidad, y enviando una confirmación.",
+    "ambiguedades": [
+      {
+        "descripcion": "No se especifica qué define a un 'afiliado activo' ni cómo se valida dicho estado en el sistema.",
+        "evidencia": "Como afiliado activo",
+        "pregunta_para_po": "¿Cómo valida el sistema que un afiliado se encuentra en estado 'activo'?",
+        "bloqueante": true
+      },
+      {
+        "descripcion": "No se detalla qué constituye una 'deuda' que impida agendar ni qué mensaje o comportamiento debe mostrar el sistema en ese caso.",
+        "evidencia": "No se puede agendar si el afiliado tiene deuda.",
+        "pregunta_para_po": "¿Qué criterio exacto define que un afiliado tiene deuda y qué mensaje debe visualizar en pantalla?",
+        "bloqueante": true
+      },
+      {
+        "descripcion": "No se especifica el canal ni el contenido del mensaje de confirmación que se envía después de agendar.",
+        "evidencia": "Se envía una confirmación después de agendar.",
+        "pregunta_para_po": "¿Por qué medio se envía la confirmación (email, SMS, notificación push) y qué datos debe contener?",
+        "bloqueante": false
+      },
+      {
+        "descripcion": "No se define qué se considera una 'consulta pendiente' (por ejemplo, si incluye las canceladas, pasadas o solo futuras).",
+        "evidencia": "más de 2 consultas pendientes con la misma especialidad.",
+        "pregunta_para_po": "¿Qué estados exactos de una consulta cuentan como 'pendientes' para el límite de 2 por especialidad?",
+        "bloqueante": true
+      }
+    ],
+    "criterios_faltantes": [
+      {
+        "descripcion": "Criterio de aceptación para el manejo de horarios ya ocupados o cuando el médico seleccionado ya no tiene disponibilidad.",
+        "justificacion": "La story menciona que el afiliado elige horario disponible, pero no indica qué sucede si el turno es ocupado por otro usuario concurrentemente."
+      }
+    ],
+    "riesgos": [
+      {
+        "descripcion": "Condiciones de carrera al seleccionar el mismo horario disponible de un médico por múltiples usuarios simultáneamente.",
+        "evidencia": "El afiliado puede elegir especialidad, médico y horario disponible.",
+        "impacto": 3,
+        "probabilidad": 2,
+        "justificacion": "Es probable en sistemas con alta concurrencia y el impacto en negocio es alto por la doble reserva de turnos."
+      }
+    ],
+    "gherkin": [
+      {
+        "titulo": "Agendamiento exitoso de consulta",
+        "criterio_origen": "El afiliado puede elegir especialidad, médico y horario disponible.",
+        "pasos": [
+          "Dado que el afiliado se encuentra autenticado en el sistema",
+          "Y el afiliado no tiene deuda",
+          "Y el afiliado tiene menos de 2 consultas pendientes con la misma especialidad",
+          "Cuando selecciona la especialidad, el médico y un horario disponible",
+          "Y confirma el agendamiento",
+          "Entonces la consulta queda agendada exitosamente",
+          "Y se envía una confirmación"
+        ],
+        "supuestos": [
+          "El afiliado está autenticado previamente en la plataforma",
+          "Existe un flujo de navegación que permite seleccionar especialidad, médico y horario"
+        ]
+      },
+      {
+        "titulo": "Intento de agendamiento con deuda",
+        "criterio_origen": "No se puede agendar si el afiliado tiene deuda.",
+        "pasos": [
+          "Dado que el afiliado tiene deuda registrada",
+          "Cuando intenta agendar una consulta",
+          "Entonces el sistema impide el agendamiento"
+        ],
+        "supuestos": [
+          "El sistema valida la deuda al intentar avanzar en el proceso de reserva"
+        ]
+      },
+      {
+        "titulo": "Superar el límite de consultas pendientes por especialidad",
+        "criterio_origen": "Un afiliado no puede tener más de 2 consultas pendientes con la misma especialidad.",
+        "pasos": [
+          "Dado que el afiliado tiene 2 consultas pendientes con la misma especialidad",
+          "Cuando intenta agendar una nueva consulta con la misma especialidad",
+          "Entonces el sistema impide el agendamiento"
+        ],
+        "supuestos": [
+          "El sistema cuenta las consultas pendientes filtrando por la especialidad seleccionada"
+        ]
+      }
+    ],
+    "invest": [
+      {
+        "criterio": "Independiente",
+        "cumple": true,
+        "justificacion": "La historia puede desarrollarse y probarse de forma autónoma, aunque depende de la existencia previa de datos de especialistas y médicos."
+      },
+      {
+        "criterio": "Negociable",
+        "cumple": true,
+        "justificacion": "Los detalles sobre el medio de confirmación y la validación de deuda son discutibles con el PO."
+      },
+      {
+        "criterio": "Valiosa",
+        "cumple": true,
+        "justificacion": "Aporta valor directo al afiliado al permitirle gestionar sus turnos sin depender de llamadas telefónicas."
+      },
+      {
+        "criterio": "Estimable",
+        "cumple": false,
+        "justificacion": "Faltan definiciones críticas sobre el concepto de deuda, validación de afiliado activo y estado de consultas pendientes, lo que impide estimar con precisión."
+      },
+      {
+        "criterio": "Pequeña",
+        "cumple": true,
+        "justificacion": "El alcance general está acotado a la funcionalidad de agendar bajo ciertas reglas de negocio."
+      },
+      {
+        "criterio": "Testeable",
+        "cumple": false,
+        "justificacion": "Al haber ambigüedades sobre las reglas de negocio (deuda, afiliado activo, consultas pendientes), los criterios de aceptación no son completamente verificables."
+      }
+    ],
+    "veredicto": {
+      "lista_para_desarrollo": false,
+      "resumen": "La user story no está lista para desarrollo debido a múltiples ambigüedades bloqueantes en las reglas de negocio (afiliado activo, definición de deuda y consultas pendientes) y fallos en los criterios Estimable y Testeable del INVEST."
+    }
+  },
+  "alertas": [],
+  "evidencias_verificadas": 8,
+  "evidencias_totales": 8,
+  "modelo": "gemini-3.5-flash-lite",
+  "version_prompt": "analista-v2",
+  "fecha": "2026-09-30 19:23"
+}
