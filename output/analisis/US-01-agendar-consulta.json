@@ -1,0 +1,38 @@
+{
+  "story_id": "US-01-agendar-consulta",
+  "ambiguedades": [
+    {
+      "texto": "No se puede agendar si el afiliado tiene deuda.",
+      "pregunta_para_po": "¿Cuál es la definición exacta de 'tener deuda'? ¿Aplica a cualquier monto vencido o existe un saldo mínimo / días de mora que bloqueen el agendamiento?"
+    },
+    {
+      "texto": "Se envía una confirmación después de agendar.",
+      "pregunta_para_po": "¿Por qué medio se envía la confirmación (email, SMS, notificación push en la app)? ¿Qué información debe contener?"
+    },
+    {
+      "texto": "Un afiliado no puede tener más de 2 consultas pendientes con la misma especialidad.",
+      "pregunta_para_po": "¿Qué se considera una 'consulta pendiente'? ¿Aplica únicamente a consultas futuras que no hayan sido canceladas ni completadas?"
+    }
+  ],
+  "criterios_faltantes": [
+    "Criterio de aceptación para manejar errores o mensajes cuando el afiliado intenta agendar y tiene deuda.",
+    "Criterio de aceptación para manejar el caso en que el horario seleccionado ya no esté disponible al momento de confirmar (concurrencia).",
+    "Criterio de aceptación para el manejo de la validación del límite de 2 consultas pendientes (mensaje de error al intentar superar el límite)."
+  ],
+  "riesgos": [
+    {
+      "descripcion": "Falta de definición en el canal y formato de la confirmación, lo que puede generar retrabajo en el desarrollo o integraciones faltantes.",
+      "severidad": "media"
+    },
+    {
+      "descripcion": "Concurrencia al reservar un horario: múltiples usuarios podrían intentar elegir el mismo médico y horario simultáneamente.",
+      "severidad": "alta"
+    },
+    {
+      "descripcion": "Ambigüedad en la regla de negocio de deuda, lo que puede bloquear indebidamente a usuarios o permitir el agendamiento a morosos.",
+      "severidad": "alta"
+    }
+  ],
+  "testeable": false,
+  "confianza": 0.7
+}
